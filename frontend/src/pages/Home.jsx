@@ -2,6 +2,8 @@ import { useState} from "react";
 import api from "../services/api";
 import SearchBar from "../components/SearchBar";
 import ProfileCard from "../components/ProfileCard";
+import NavBar from "../components/NavBar";
+import { Container, Typography } from "@mui/material";
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -55,18 +57,48 @@ function Home() {
 };
 */
   return (
-    <div style={{ padding: "40px" }}>
-        <h1>CodeLens</h1>
+    <>
+      <NavBar />
+
+      <Container maxWidth="md" sx={{ ml: 0, mr: 'auto', mt: 2 }}>
+
+        <Typography 
+          variant="h4" 
+          align="centre" 
+          gutterBottom
+          fontWeight="bold"
+        >
+          Competetive Programming Analytics
+        </Typography>
+
+        <Typography
+          align="centre"
+          color="text.secondary"
+          sx={{ mb: 4 }}
+        >
+          Search any Codeforces user to get their profile and contest statistics.
+        </Typography>
 
         <SearchBar onSearch={searchUser} />
 
-        {loading && <p>Loading...</p>}
+        {loading && (
+          <Typography sx={{ mt: 3 }}>
+          Loading...
+          </Typography>
+        )}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <Typography color="error" sx={{ mt: 3 }}>
+            {error}
+          </Typography>
+        )}
         
-        {user && <ProfileCard user={user} />}
+        {user && (
+          <ProfileCard user={user} />
+        )}
 
-    </div>
+      </Container>
+    </>
   );
 }
 
