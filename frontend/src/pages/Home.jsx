@@ -4,21 +4,29 @@ import SearchBar from "../components/SearchBar";
 import ProfileCard from "../components/ProfileCard";
 import NavBar from "../components/NavBar";
 import { Container, Typography } from "@mui/material";
+import RatingChart from "../components/RatingChart";
+import AnalyticsCard from "../components/AnalyticsCards";
+import { calculateContestStats } from "../utils/analytics";
+import ContestHistoryTable from "../components/ContestHistoryTable";
 
 function Home() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    
+    const [ratingHistory, setRatingHistory] = useState([]);
+
     const searchUser = async (handle) => {
         setLoading(true);
         setError(""); // Clear previous errors
         setUser(null);
         
         try {
-            const response = await api.get(`/users/${handle}`);
-            setUser(response.data);
-
+            const [userResponse, ratingResponse] = await Promise.all([
+              api.get(`/users/${handle}`),
+              api.get(`/users/${handle}/rating`),
+            ]);
+            setUser(userResponse.data);
+            setRatingHistory(ratingResponse.data);
         } catch (error) {
 
             if (error.response) {
@@ -31,6 +39,10 @@ function Home() {
             setLoading(false);
         }
     };
+
+    const stats = 
+        user && ratingHistory.length > 0 
+          ? calculateContestStats(ratingHistory, user) : null;
   /*
  const searchUser = async (handle) => {
   setLoading(true);
@@ -64,15 +76,15 @@ function Home() {
 
         <Typography 
           variant="h4" 
-          align="centre" 
+          //align="center" 
           gutterBottom
           fontWeight="bold"
         >
-          Competetive Programming Analytics
+          Competitive Programming Analytics
         </Typography>
 
         <Typography
-          align="centre"
+          //align="center"
           color="text.secondary"
           sx={{ mb: 4 }}
         >
@@ -97,6 +109,17 @@ function Home() {
           <ProfileCard user={user} />
         )}
 
+        {stats && (
+          <AnalyticsCard stats={stats} />
+        )}
+
+        {ratingHistory.length > 0 && (
+          <ContestHistoryTable history={ratingHistory} />
+        )}
+
+        {ratingHistory.length > 0 && (
+          <RatingChart data={ratingHistory} />
+        )}
       </Container>
     </>
   );
