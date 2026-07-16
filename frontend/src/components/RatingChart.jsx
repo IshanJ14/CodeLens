@@ -26,7 +26,10 @@ function RatingChart({ data }) {
 
                         <YAxis />
 
-                        <Tooltip />
+                        <Tooltip
+                            formatter={(value) => [value, "Rating"]}
+                            labelFormatter={(label) => `Contest: ${label}`}
+                        />
 
                         <Line
                             type="monotone"

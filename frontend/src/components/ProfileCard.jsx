@@ -13,6 +13,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import BusinessIcon from "@mui/icons-material/Business"
+import { getRankColor } from "../utils/rankColors";
 
 function ProfileCard({ user }) {
     return (
@@ -37,15 +38,29 @@ function ProfileCard({ user }) {
                         }}
                     />
                     <Box>
-                        <Typography variant="h4" fontWeight="bold">
-                            {user.handle}
+                        <Typography variant="h4" fontWeight="bold" sx={{ color: getRankColor(user.rank) }}>
+                            {user.rank?.toLowerCase() === "legendary grandmaster" ? (
+                                <>
+                                    <span style={{ color: "black" }}>
+                                        {user.handle.charAt(0)}
+                                    </span>
+                                    <span style={{ color: "#D32F2F" }}>
+                                        {user.handle.slice(1)}
+                                    </span>
+                                </>
+                            ) : (
+                                user.handle
+                            )}
                         </Typography>
                         
                         <Chip 
                             label={user.rank}
-                            color="primary"
+                            //color="primary"
                             sx={{ 
-                                mt : 1
+                                mt : 1,
+                                fontWeight: "bold",
+                                bgcolor: getRankColor(user.rank),
+                                color: "white",
                             }}
                         />
                     </Box>
