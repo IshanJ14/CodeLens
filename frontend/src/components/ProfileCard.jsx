@@ -14,6 +14,9 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import BusinessIcon from "@mui/icons-material/Business"
 import { getRankColor } from "../utils/rankColors";
+import { formatDate, timeAgo, } from "../utils/dateUtils";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 function ProfileCard({ user }) {
     return (
@@ -94,7 +97,18 @@ function ProfileCard({ user }) {
                         <BusinessIcon sx={{ mr: 1 }} />
                         <strong>Organization:</strong> {user.organization || "N/A"}
                     </Typography>
+                    
+                    <Typography display="flex" alignItems="center">
+                        <CalendarMonthIcon sx={{ mr: 1 }} />
+                        <strong>Registered:</strong>{" "}
+                        {formatDate(user.registrationTimeSeconds)}
+                    </Typography>
 
+                    <Typography>
+                        <AccessTimeIcon sx={{ mr: 1 }} />
+                        <strong>Last Online:</strong>{" "}
+                        {timeAgo(user.lastOnlineTimeSeconds)}
+                    </Typography>
                 </Box>
             </CardContent>
         </Card>
